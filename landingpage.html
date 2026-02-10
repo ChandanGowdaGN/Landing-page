@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BAGIFY | The Men's Edit</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --card-bg: #f5f5f5;
+      --accent: #1a1a1a;
+      --text-muted: #666;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+    body { background-color: var(--bg); color: var(--accent); line-height: 1.6; overflow-x: hidden; }
+
+    /* Animations */
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-15px); }
+      100% { transform: translateY(0px); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 8%;
+      border-bottom: 1px solid #eee;
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 100;
+    }
+    .nav-left { display: flex; align-items: center; gap: 20px; }
+    .menu-icon { cursor: pointer; display: flex; align-items: center; }
+    .logo { font-weight: 800; font-size: 22px; letter-spacing: -1px; }
+    
+    .nav-links { display: flex; align-items: center; }
+    .nav-links a { text-decoration: none; color: var(--accent); margin-left: 25px; font-size: 14px; font-weight: 500; transition: 0.3s; }
+    .nav-links a:hover { opacity: 0.7; }
+    
+    .icon-group { display: flex; align-items: center; gap: 15px; margin-left: 25px; }
+    .shop-btn { background: var(--accent); color: #fff !important; padding: 8px 20px; border-radius: 4px; }
+
+    /* Hero Section */
+    .hero {
+      display: flex;
+      align-items: center;
+      padding: 80px 8%;
+      gap: 50px;
+      background: #bbc6eb;
+      min-height: 80vh;
+    }
+    .hero-content { flex: 1; animation: fadeIn 1s ease-out; }
+    .hero-content h1 { font-size: 56px; line-height: 1.1; margin-bottom: 20px; font-weight: 700; }
+    .hero-content p { color: #444; font-size: 18px; margin-bottom: 30px; max-width: 450px; }
+    
+    .hero-image { flex: 1.2; display: flex; gap: 20px; }
+    .hero-image img { 
+      width: 100%; 
+      height: 450px; 
+      object-fit: cover; 
+      border-radius: 8px; 
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      animation: float 6s ease-in-out infinite;
+    }
+    .hero-image img:nth-child(2) { animation-delay: 1s; margin-top: 40px; }
+
+    /* Products Section */
+    .section { padding: 80px 8%; }
+    .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+    .section-title { font-size: 28px; font-weight: 700; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+
+    .product-card { transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    .product-card:hover { transform: translateY(-10px); }
+    
+    .img-box { background: var(--card-bg); padding: 40px; position: relative; overflow: hidden; border-radius: 8px; }
+    .img-box img { width: 100%; height: 300px; object-fit: contain; transition: 0.5s; }
+    .product-card:hover .img-box img { transform: scale(1.1); }
+    
+    .cart-add { 
+      position: absolute; bottom: 20px; right: 20px; 
+      background: #fff; padding: 10px; border-radius: 50%; 
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+      opacity: 0; transform: translateY(10px); transition: 0.3s;
+    }
+    .product-card:hover .cart-add { opacity: 1; transform: translateY(0); }
+
+    .product-info { margin-top: 20px; display: flex; justify-content: space-between; align-items: center; }
+    .product-info h4 { font-size: 17px; font-weight: 600; }
+    .product-info p { color: var(--accent); font-weight: 700; font-size: 15px; }
+
+    /* Newsletter Box */
+    .newsletter-wrap {
+      margin: 0 8% 80px;
+      background: var(--accent);
+      color: #fff;
+      padding: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 12px;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+    }
+    .newsletter-text h3 { font-size: 32px; margin-bottom: 10px; }
+    .input-group { display: flex; gap: 10px; }
+    .input-group input { padding: 15px 20px; border: 1px solid #444; background: transparent; color: #fff; width: 300px; border-radius: 4px; }
+    .input-group button { background: #fff; border: none; padding: 0 30px; font-weight: 700; cursor: pointer; border-radius: 4px; transition: 0.3s; }
+    .input-group button:hover { background: #eee; }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .hero { flex-direction: column; text-align: center; padding-top: 40px; }
+      .hero-content p { margin: 0 auto 30px; }
+      .hero-image { width: 100%; }
+      .newsletter-wrap { flex-direction: column; text-align: center; gap: 30px; padding: 40px 20px; }
+      .nav-links a:not(.shop-btn) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <div class="nav-left">
+      <div class="menu-icon"><i data-lucide="menu"></i></div>
+      <div class="logo">BAGIFY.</div>
+    </div>
+    <div class="nav-links">
+      <a href="#">Collection</a>
+      <a href="#">About</a>
+      <a href="#">Our Story</a>
+      <div class="icon-group">
+        <a href="#"><i data-lucide="search" size="20"></i></a>
+        <a href="#" style="position: relative;">
+          <i data-lucide="shopping-bag" size="20"></i>
+        </a>
+        <a href="#" class="shop-btn">Shop Now</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-content">
+      <h1>Engineered Carry for the Modern Man</h1>
+      <p>Crafted with purpose, our collection blends refined style with industrial durability for every endeavor.</p>
+      <button style="background:var(--accent); color:#fff; border:none; padding:18px 40px; font-weight:bold; cursor:pointer; border-radius:4px;">Discover More</button>
+    </div>
+    <div class="hero-image">
+      <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=800" alt="Men's Messenger Bag">
+      <img src="https://images.unsplash.com/photo-1547949003-9792a18a2601?auto=format&fit=crop&q=80&w=800" alt="Men's Style">
+    </div>
+  </header>
+
+  <section class="section">
+    <div class="section-header">
+      <h2 class="section-title">The Men's Edit</h2>
+      <a href="#" style="color: var(--accent); font-weight: 600; text-decoration: none; border-bottom: 2px solid var(--accent);">View All</a>
+    </div>
+    
+    <div class="grid">
+      <div class="product-card">
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1548036328-c9fa89d128fa?auto=format&fit=crop&q=80&w=600" alt="Executive Briefcase">
+          <div class="cart-add"><i data-lucide="plus"></i></div>
+        </div>
+        <div class="product-info">
+          <div>
+            <h4>The Executive Briefcase</h4>
+            <span style="font-size: 12px; color: #888;">Full-Grain Leather</span>
+          </div>
+          <p>$280.00</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&q=80&w=600" alt="Canvas Messenger">
+          <div class="cart-add"><i data-lucide="plus"></i></div>
+        </div>
+        <div class="product-info">
+          <div>
+            <h4>Canvas Messenger Bag</h4>
+            <span style="font-size: 12px; color: #888;">Waterproof Canvas</span>
+          </div>
+          <p>$110.00</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="img-box">
+          <img src="https://images.unsplash.com/photo-1590874103328-eac38a683ce7?auto=format&fit=crop&q=80&w=600" alt="Premium Duffel">
+          <div class="cart-add"><i data-lucide="plus"></i></div>
+        </div>
+        <div class="product-info">
+          <div>
+            <h4>Premium Weekend Duffel</h4>
+            <span style="font-size: 12px; color: #888;">Travel Essential</span>
+          </div>
+          <p>$350.00</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="newsletter-wrap">
+    <div class="newsletter-text">
+      <h3>Stay in the Loop</h3>
+      <p>Subscribe for early access to new collections and exclusive offers.</p>
+    </div>
+    <div class="input-group">
+      <input type="email" placeholder="Email Address">
+      <button>Join</button>
+    </div>
+  </div>
+
+  <footer style="text-align: center; padding-bottom: 40px; color: #999; font-size: 12px; letter-spacing: 1px;">
+    &copy; 2026 BAGIFY CONCEPTS. ETHICALLY SOURCED MATERIALS.
+  </footer>
+
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>
